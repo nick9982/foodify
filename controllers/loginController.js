@@ -1,31 +1,30 @@
-const mysql = require('mysql');
+const sql = require('mssql');
 
-const con = mysql.createConnection({
-    host: 'kindergartenserver.database.windows.net',
+const sqlConfig = {
+    server: 'kindergartenserver.database.windows.net',
     user: 'praise123',
     password: '_4eR^xyoupoL',
-    database: 'foodify'
-});
+    database: 'foodify',
+    pool: {
+        max: 10,
+        min: 0,
+        idleTimeoutMillis: 30000,
+    },
+    options: {
+        encrypt: true,
+        trustServerCertificate: false,
+    },
+};
 
-// con.connect( (err) => {
-//     if (err) {console.error(err); throw err;}
-//     console.log('Connected');
-//     var sql_query = "INSERT INTO Employee (EmployeeID, FirstName, LastName, EmployeeType, Username, PW) VALUES ('001', 'John', 'Doe', 'Manager', 'admin', 'admin')";
-//     var sql_query2 = "SELECT * FROM Employee";
-//     con.query(sql_query2, (err, result, fields) => {
-//         if (err) throw err;
-//         console.log('result of sql query');
-//         console.log(result);
-//     });
-// });
-
-const handleLogin = (req, res) => {
-    con.connect( (err) => {
-        if (err) throw err;
-        console.log('Connected');
-    });
-    console.log(req.headers);
-    res.json({empty: ''});
+const handleLogin = async (req, res) => {
+    try {
+        await sql.connect(sqlConfig);
+        var result = await sql.query('SELECT * FROM Employee');
+        console.log('result');
+    } catch (error) {
+        throw error;
+    }
+    res.json(result.recordset);
 }
 
 module.exports = {handleLogin};
