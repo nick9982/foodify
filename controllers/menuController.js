@@ -16,15 +16,15 @@ const sqlConfig = {
     },
 };
 
-const handleLogin = async (req, res) => {
+const handleMenu = async (req, res) => {
     try {
         await sql.connect(sqlConfig);
         var result = await sql.query('SELECT * FROM Employee');
-        console.log('result');
     } catch (error) {
         throw error;
     }
+    // Result
     res.json(result.recordset);
 }
 
-module.exports = {handleLogin};
+module.exports = {handleMenu};

@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {handleLogin} = require('../controllers/loginController');
+const {handleMenu} = require('../controllers/menuController');
 
 
-router.get('/', handleLogin);
+router.get('/', handleMenu);
 
 module.exports = router;
