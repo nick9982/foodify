@@ -37,7 +37,6 @@ const handleCreateAccount = async (req, res) =>
             if(username_filter(name))
             {
                 pwd = hash_password(pwd);
-                let id = id_gen();
                 try {
                     await sql.connect(sqlConfig);
                     var result = await sql.query(`
@@ -50,6 +49,16 @@ const handleCreateAccount = async (req, res) =>
                     }
                     else
                     {
+                        let id_has_gen = false;
+                        while(result.recordsets[0].length != 0 || !id_has_gen)
+                        {
+                            let id = id_gen();
+                            result = await sql.query(`
+                                SELECT ID FROM EMPLOYEE
+                                WHERE ID = '${id}'
+                            `)
+                            id_has_gen = true;
+                        }
                         await sql.query(`
                             INSERT INTO EMPLOYEE
                             VALUES('${id}', '${user}', '${name}', '${pwd}', '${type}')
