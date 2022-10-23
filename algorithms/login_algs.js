@@ -115,7 +115,7 @@ const processPwd = (pwd) =>
     while(!errors.isEmpty())
     {
         let curError = errors.pop();
-        if(t == false)
+        if(!t)
         {
             error += curError;
             t = true;
