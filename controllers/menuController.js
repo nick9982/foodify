@@ -1,5 +1,4 @@
 const sql = require('mssql');
-
 const sqlConfig = {
     server: 'kindergartenserver.database.windows.net',
     user: 'praise123',
@@ -8,7 +7,7 @@ const sqlConfig = {
     pool: {
         max: 10,
         min: 0,
-        idleTimeoutMillis: 90000,
+        idleTimeoutMillis: 60000,
     },
     options: {
         encrypt: true,
@@ -16,25 +15,18 @@ const sqlConfig = {
     },
 };
 
-const foodNames = ['Pasta', 'French Fries', 'Ice cream', 'Bread', 'Fried Rice', 'Pancakes', 'Burger', 'Pizza']
-
-const handleMenu = async (req, res) => {
-    let totalRows = 0;
+const handleGetMenu = async (req, res) => {
     for (let index = 0; index < foodNames.length; index++) {
-        let price = Math.floor(Math.random() * 101);
-        let uniqueID = Math.floor(Math.random() * 101);
         try {
             await sql.connect(sqlConfig);
             var result = await sql.query(`
-            INSERT INTO MenuItems VALUES (${uniqueID}, '${foodNames[index]}', ${price}, 'none', 'none')
+            select * from MenuItems
             `);
         } catch (error) {
             throw error;
         }
-        // Result
-        totalRows = parseInt(totalRows) + parseInt(result.rowsAffected);
     }
-    res.json({rowsAffected: totalRows});
+    res.send(result.recordsets);
 }
 
-module.exports = {handleMenu};
+module.exports = {handleGetMenu};
