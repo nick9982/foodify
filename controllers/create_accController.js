@@ -52,9 +52,9 @@ const handleCreateAccount = async (req, res) =>
                         let id_has_gen = false;
                         while(result.recordsets[0].length != 0 || !id_has_gen)
                         {
-                            let id = id_gen();
+                            var id = id_gen();
                             result = await sql.query(`
-                                SELECT ID FROM EMPLOYEE
+                                SELECT EMPID FROM EMPLOYEE
                                 WHERE EMPID = '${id}'
                             `)
                             id_has_gen = true;
