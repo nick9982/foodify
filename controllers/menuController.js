@@ -16,17 +16,15 @@ const sqlConfig = {
 };
 
 const handleGetMenu = async (req, res) => {
-    for (let index = 0; index < foodNames.length; index++) {
-        try {
-            await sql.connect(sqlConfig);
-            var result = await sql.query(`
-            select * from MenuItems
-            `);
-        } catch (error) {
-            throw error;
-        }
+    try {
+        await sql.connect(sqlConfig);
+        var result = await sql.query(`
+        select * from MenuItems
+        `);
+    } catch (error) {
+        throw error;
     }
-    res.send(result.recordsets);
+    res.send(JSON.stringify(result.recordsets));
 }
 
 module.exports = {handleGetMenu};
