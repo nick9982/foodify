@@ -55,7 +55,7 @@ const handleCreateAccount = async (req, res) =>
                             let id = id_gen();
                             result = await sql.query(`
                                 SELECT ID FROM EMPLOYEE
-                                WHERE ID = '${id}'
+                                WHERE EMPID = '${id}'
                             `)
                             id_has_gen = true;
                         }
