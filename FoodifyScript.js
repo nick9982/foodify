@@ -18,6 +18,14 @@ function validate() {
     }
 }
 
+function register() {
+    var username=document.getElementById("UN").value;
+    var password=document.getElementById("PW").value;
+    // Connect with backend to create new account
+
+    alert("new account created");
+}
+
 // Add item to menu with which item id is added
 function addItem() {
 
