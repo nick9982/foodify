@@ -67,6 +67,8 @@ input[type=submit] {
     border-radius: 15px;
     border-color:#ff8800;
     color: #ff8800;
+    transition: all 0.5s;
+    cursor: pointer;
 }
 
 button {
@@ -84,14 +86,14 @@ button {
         margin: 5px;
 }
 
-button span {
+button span, input[type=submit] span {
     cursor: pointer;
     display: inline-block;
     position: relative;
     transition: 0.5s;
 }
 
-button span:after {
+button span:after, input[type=submit] span:after {
     content: '\00bb';
     position: absolute;
     opacity: 0;
@@ -100,16 +102,16 @@ button span:after {
     transition: 0.5s;
 }
 
-button:hover {
+button:hover, input[type=submit]:hover {
     background-color: orange;
     color: white;
 }
 
-button:hover span {
+button:hover span, input[type=submit]:hover span {
     padding-right: 25px;
 }
 
-button:hover span:after {
+button:hover span:after, input[type=submit]:hover span:after {
     opacity: 1;
     right: 0;
 }
