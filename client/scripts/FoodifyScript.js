@@ -16,7 +16,7 @@ function validate() {
         Password: password
     };
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", server + "/login");
+    xhr.open("GET", server + "/login");
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Content-Type", "application/json");
 
