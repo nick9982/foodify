@@ -11,22 +11,14 @@ function validate() {
     var password=document.getElementById("PW").value;
 
     // Connect with backend here to validate user
-    let data = `{
-        \"Username\": \"${username}\",
-        \"Password\": \"${password}\"
-    }`;
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", server + "/login", true);
-
-    xhr.onload = () => {
-        if(xhr.readyState == 4)
-        {
-            let res = JSON.parse(xhr.responseText);
-            console.log(res);
-        }
+    let data = {
+        Username: username,
+        Password: password
     };
-
-    xhr.send(data);
+    const request = new Request(server + "/login", JSON.stringify(data));
+    
+    fetch(request)
+        .then()
 }
 
 function register() {

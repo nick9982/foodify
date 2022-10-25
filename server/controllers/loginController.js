@@ -39,16 +39,16 @@ const handleLoginAttempt = async (req, res) =>
         }
         if(result.recordsets[0].length == 1)
         {
-            response = `{"Error":"login successful"}`;
+            response = {Error: "login success"};
         }
         else
         {
-            response = `{"Error":"Authentication failed successful"}`;
+            response = {Error:"Authentication failed"};
         }
     }
     else
     {
-        response = `{"Error":"Authentication failed"}`;
+        response = {Error:"Authentication failed"};
     }
     console.log(JSON.stringify(response));
     res.send(JSON.stringify(response));
