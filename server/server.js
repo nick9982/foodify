@@ -16,5 +16,5 @@ app.use('/create_account', require('./routes/create_acc'));
 app.use('/login', require('./routes/login'));
 
 app.listen(PORT, () => {
-    console.log('Hello World! \nI\'m listening on port http://localhost:' + PORT);
+    console.log('I\'m listening on port http://localhost:' + PORT);
 });
