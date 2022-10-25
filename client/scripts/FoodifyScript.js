@@ -1,21 +1,39 @@
 // this doesnt work
-$(document).ready(function(){
-    $("#div1").fadeIn();
-    $("#div1").animate({down: '50px'});
-});
+//$(document).ready(function(){
+//    $("#div1").fadeIn();
+//    $("#div1").animate({down: '50px'});
 
+//});
+const server = "http://localhost:8080"
 function validate() {
     var username=document.getElementById("UN").value;
     var password=document.getElementById("PW").value;
+    console.log(username);
     // Connect with backend here to validate user
     
-    // Temp data
-    if(username=="admin" && password=="user") {
-        alert("Login successful.");
-        window.open("FoodifyMenu.html");
-    } else {
-        alert("Login failed.");
+    let xhr = new XMLHttpRequest();
+
+    let data = {
+        Username: username,
+        Password: password
+    };
+
+    xhr.open("POST", server + "/login");
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function ()
+    {
+        if(xhr.readyState === 4)
+        {
+            console.log("runs");
+            let res = JSON.parse(xhr.responseText);
+            alert(res["Error"]);
+            if(res["Error"] == "login successful") window.open("FoodifyMenu.html")
+            else window.open("FoodifyLoginPage.html"); 
+        }
     }
+    xhr.send(JSON.stringify(data));
 }
 
 function register() {

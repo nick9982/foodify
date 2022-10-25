@@ -75,8 +75,12 @@ const handleCreateAccount = async (req, res) =>
             }
         }
     }
-    if(error.length == 0) res.send("Account created successfully");
-    else res.send(error);
+    if(error.length == 0) res.send(JSON.stringify(`{"Error":"Account created successfully"}`));
+    else
+    {
+        error = `{"Error":"${error}"}`;
+        res.send(JSON.stringify(error));
+    }
 }
 
 module.exports = {handleCreateAccount};

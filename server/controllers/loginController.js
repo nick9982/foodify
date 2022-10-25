@@ -21,6 +21,7 @@ const handleLoginAttempt = async (req, res) =>
 {
     let user = req.body.Username;
     let pass = hash_password(req.body.Password);
+    let response;
     if(username_filter(user))
     {
         try
@@ -38,17 +39,19 @@ const handleLoginAttempt = async (req, res) =>
         }
         if(result.recordsets[0].length == 1)
         {
-            res.send('login success');
+            response = `{"Error":"login successful"}`;
         }
         else
         {
-            res.send('authentication failed');
+            response = `{"Error":"Authentication failed successful"}`;
         }
     }
     else
     {
-        res.send('authentication failed');
+        response = `{"Error":"Authentication failed"}`;
     }
+    console.log(JSON.stringify(response));
+    res.send(JSON.stringify(response));
 }
 
 module.exports = {handleLoginAttempt};
