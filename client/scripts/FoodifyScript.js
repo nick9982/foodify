@@ -6,24 +6,6 @@
 //});
 
 const server = "http://localhost:8080"
-// function validate() {
-//     var username=document.getElementById("UN").value;
-//     var password=document.getElementById("PW").value;
-
-//     // Connect with backend here to validate user
-//     let data = {
-//         Username: username,
-//         Password: password
-//     };
-//     const request = new Request(server + "/login", {method: 'POST', body: JSON.stringify(data)});
-//     fetch(request)
-//         .then((response) => {
-//             if(response.status === 200)
-//             {
-//                 return response.json();
-//             }
-//         });
-// }
 
 function validate()
 {
@@ -41,19 +23,6 @@ function validate()
             if(data["Error"] == "Authentication failed") window.location = "FoodifyLoginPage.html";
             else window.location = "FoodifyMenu.html";
         })
-    // const response = await fetch(server + "/login", {
-    //     method: 'POST',
-    //     mode: 'cors',
-    //     cache: 'no-cache',
-    //     credentials: 'same-origin',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'Accept': 'application/json'
-    //     },
-    //     redirect: 'follow',
-    //     reffererPolicy: 'no-refferer',
-    //     body: JSON.stringify(data)
-    // });
 
 }
 
