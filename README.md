@@ -3,6 +3,14 @@
    To get started, check out our docs/ folder and review our documentation.<br>
    Already familiar with the project? Clone this repo and check it out!</p>
 
+# Package information
+  As a web application, this project is divided between two fundamental packages, 
+  the client and server packages (roughly corresponding to frontend and backend
+  respectively). client/ contains html scripts, cascading style sheets, and javascript
+  files used client-side, whereas server/ contains nodejs files for controlling
+  and processing data backend.
+  
+# Extra readme info
 ## Sprint: 1  Author: Praise Chinedu-Eneh
 
 ### Purpose: 
@@ -26,4 +34,3 @@ their security clearence level.
 When the create account button is clicked, the backend would recieve a 
 post request with the new employees information. We would parse that 
 information and add it to the database.
->>>>>>> origin/praise-createacct-menu
