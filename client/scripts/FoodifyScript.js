@@ -39,7 +39,8 @@ async function validate()
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
         redirect: 'follow',
         reffererPolicy: 'no-refferer',
