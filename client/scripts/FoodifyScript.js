@@ -11,27 +11,22 @@ function validate() {
     var password=document.getElementById("PW").value;
 
     // Connect with backend here to validate user
-    let data = {
-        Username: username,
-        Password: password
-    };
+    let data = `{
+        \"Username\": \"${username}\",
+        \"Password\": \"${password}\"
+    }`;
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", server + "/login");
-    xhr.setRequestHeader("Accept", "application/json");
-    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.open("GET", server + "/login", true);
 
-    xhr.onreadystatechange = function ()
-    {
-        if(xhr.readyState === 4)
+    xhr.onload = () => {
+        if(xhr.readyState == 4)
         {
-            console.log("runs");
             let res = JSON.parse(xhr.responseText);
-            alert(res["Error"]);
-            if(res["Error"] == "login successful") window.open("FoodifyMenu.html")
-            else window.open("FoodifyLoginPage.html"); 
+            console.log(res);
         }
-    }
-    xhr.send(JSON.stringify(data));
+    };
+
+    xhr.send(data);
 }
 
 function register() {
