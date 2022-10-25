@@ -3,6 +3,6 @@ const router = express.Router();
 const {handleCreateAccount} = require('../controllers/create_accController');
 
 
-router.post('/', handleCreateAccount);
+router.get('/', handleCreateAccount);
 
 module.exports = router;

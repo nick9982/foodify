@@ -4,20 +4,18 @@
 //    $("#div1").animate({down: '50px'});
 
 //});
+
 const server = "http://localhost:8080"
 function validate() {
     var username=document.getElementById("UN").value;
     var password=document.getElementById("PW").value;
-    console.log(username);
-    // Connect with backend here to validate user
-    
-    let xhr = new XMLHttpRequest();
 
+    // Connect with backend here to validate user
     let data = {
         Username: username,
         Password: password
     };
-
+    let xhr = new XMLHttpRequest();
     xhr.open("POST", server + "/login");
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Content-Type", "application/json");

@@ -4,6 +4,6 @@ const router = express.Router();
 const {handleLoginAttempt} = require('../controllers/loginController');
 
 
-router.post('/', handleLoginAttempt);
+router.get('/', handleLoginAttempt);
 
 module.exports = router;
