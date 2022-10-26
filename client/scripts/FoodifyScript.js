@@ -22,7 +22,7 @@ function validate()
             alert(data["Error"]);
             if(data["Error"] == "Authentication failed") window.location = "FoodifyLoginPage.html";
             else window.location = "FoodifyMenu.html";
-        })
+        });
 
 }
 
@@ -51,11 +51,6 @@ function register() {
     // Connect with backend to create new account
 
     alert("new account created");
-}
-
-// Add item to menu with which item id is added
-function addItem() {
-
 }
 
 // Logout 
