@@ -57,11 +57,9 @@ function register() {
     var re_enteredPassword = document.getElementById("RPW").value;
     const buttons = document.getElementsByClassName("radiobtn");
     var role = '';
-    for(const button of buttons)
-    {
-        if(button.checked) role = button.value;
-        break;
-    }
+    if(buttons[0].checked) role = "Employee";
+    if(buttons[1].checked) role = "Manager";
+    
     if(name == '' || username == '' || password == '' || re_enteredPassword == '' || role == '')
     {
         alert('All fields required');
