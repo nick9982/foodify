@@ -1,0 +1,117 @@
+body {
+    background-color: #ff8800;
+}
+
+h1 {
+    text-align: center;
+    font-size: 50px;
+    font-family: Segoe UI;
+    color: white;   
+}
+
+h2 {
+    text-align: center;
+    font-size: 75px;
+    font-family: Segoe UI;
+    color: white;
+}
+
+h3 {
+    text-align: center;
+    font-size: 25px;
+    font-family: Segoe UI;
+    color: white;
+}
+
+p {
+    
+    font-size: 20px;
+    font-family: Segoe UI;
+    font-weight: bold;
+    color: white;
+}
+
+.menuImage {  
+    border: 10px solid white;
+    border-radius: 8px; 
+    width: 300px;   
+}
+
+input[type=text], input[type=password] {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 20px 0;
+    font-size: 20px;
+    border-radius: 15px;
+    border-color:white;
+    color: #ff8800;
+}
+input[type=text]:focus, input[type=password]:focus {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 20px 0;
+    font-size: 20px;
+    border-radius: 15px;
+    border-color:white;
+    background-color: white;
+    color: #ff8800;
+}
+
+
+input[type=submit] {
+    text-align:center;
+    width: 15%;
+    padding: 12px 20px;
+    margin: 20px 0;
+    font-size: 20px;
+    border-radius: 15px;
+    border-color:#ff8800;
+    color: #ff8800;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+button {
+    display: inline-block;
+        background-color: white;
+        border-radius: 10px;
+        border: 4px double #ff8800;
+        color: #ff8800;
+        text-align: center;
+        font-size: 28px;
+        padding: 20px;
+        width: 200px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+}
+
+button span, input[type=submit] span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+button span:after, input[type=submit] span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+button:hover, input[type=submit]:hover {
+    background-color: orange;
+    color: white;
+}
+
+button:hover span, input[type=submit]:hover span {
+    padding-right: 25px;
+}
+
+button:hover span:after, input[type=submit]:hover span:after {
+    opacity: 1;
+    right: 0;
+}
