@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Sheikh Fayyaz">
+
+    <link rel="stylesheet" href="../styles/FoodifyStyles.css">
+
+    <script src="../scripts/jquery-3.6.1.js"></script>
+    <script src="../scripts/FoodifyScript.js"></script>
+
+    <title>Foodify Register</title>
+</head>
+
+<body>
+    <div style="text-align:center">
+        <h2> Register </h2>
+        <p id="center" style="text-align:left; padding-left: 32%">
+            Name: <br>
+            <input type="text" name="" id="NM">
+            <br> 
+            Username: <br>
+            <input type="text" name="" id="UN">
+            <br> 
+            password: 
+            <br>
+            <input type="password" name="" id="PW"> 
+            <br>
+            re-enter password: 
+            <br>
+            <input type="password" name="" id="RPW"> 
+            <br>
+            Select Role:
+            <br>
+            <input type = "radio" id = "RE" name = "Role" value = "Employee">
+            <label for = "RE">Employee</label>
+            <br>
+            <input type = "radio" id = "RM" name = "Role" value = "Manager">
+            <label for = "RM">Manager</label>
+        
+        </p>
+        <input type="submit" name="" value="Register" onclick="register()">
+        <input type="submit" name="" value="Cancel" onclick="window.location.href = 'FoodifyLoginPage.html'; ">
+
+    </div>
+</body>
