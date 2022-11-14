@@ -94,9 +94,9 @@ let info = parseCookie(decCookie);
 const session = info["SID"];
 const userid = info["UID"];
 const name = info["NAME"];
-
+var intid;
 window.onload = () =>{
-    var intid = startSessionChecker(session);
+    intid = startSessionChecker(session);
     menu();
     document.getElementById("logout").addEventListener('click', logout);
 };
