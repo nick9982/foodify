@@ -15,20 +15,94 @@ function validate()
     if(username == '' || password == '') alert("All fields required");
     else
     {
-        let data = {
-            Username: username,
-            Password: password
-        };
-
-        login(data)
+        fetch_ip()
             .then(response => response.json())
-            .then(data => {
-                alert(data["Error"]);
-                if(data["Error"] == "Authentication failed") window.location = "FoodifyLoginPage.html";
-                else window.location = "FoodifyMenu.html";
+            .then(data2=>{
+                let ipadd = data2["query"];
+                let data = {
+                    Username: username,
+                    Password: password,
+                    ip: ipadd
+                };
+                login(data)
+                    .then(response => response.json())
+                    .then(data1 => {
+                        alert(data1["Error"]);
+                        if(data1["Error"] == "Authentication failed") window.location = "FoodifyLoginPage.html";
+                        else 
+                        {
+                            document.cookie = `SID=${data1["Ses_id"]};path=/`;
+                            document.cookie = `UID=${data1["Uid"]};path=/`;
+                            document.cookie = `NAME=${data1["Name"]};path=/`;
+                            window.location = "FoodifyMenu.html";
+                        }
+                    });
             });
     }
+}
 
+const fetch_ip = async () =>
+{
+    const response = await fetch("http://ip-api.com/json", {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        redirect: 'follow',
+        reffererPolicy: 'no-refferer',
+    });
+
+    return response;
+}
+
+//starting session script
+export const startSessionChecker = (id) =>
+{
+    return setInterval(cfss, 10000, id);
+};
+
+export const killSessionChecker = (id) =>
+{
+    clearInterval(id);
+};
+
+const confirm_session = async (sid, ip) => {
+    const response = await fetch(server + "/verify_session", {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        redirect: 'follow',
+        reffererPolicy: 'no-refferer',
+        body: JSON.stringify({id: sid, ip: ip})
+    });
+
+    return response;
+};
+
+const cfss = (id) =>
+{
+    let ip = 0;
+    fetch_ip()
+        .then(response => response.json())
+        .then(data2=>{
+            ip = data2["query"];
+            confirm_session(id, ip)
+                .then(response => response.json())
+                .then(data => {
+                    //if this is true the session is live
+                    //if this is false the session is dead
+                    console.log(data["status"]);
+            });
+        });
 }
 
 const login = async (data) =>
@@ -109,6 +183,12 @@ function toRegPage()
 }
 
 // Logout 
-function logout() {
+export function logout() {
     window.location = "FoodifyLoginPage.html";
 }
+
+window.onload = () => {
+    document.getElementById("validate").addEventListener('click', validate);
+    document.getElementById("toRegPage").addEventListener('click', toRegPage);
+};
+//send ip to backend

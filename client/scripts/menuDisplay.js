@@ -1,3 +1,7 @@
+import {startSessionChecker, logout, killSessionChecker} from './FoodifyScript.js';
+
+const server = "http://localhost:8080";
+
 const retrieveMenu = async () =>
 {
     const response = await fetch(server + "/view_menu", {
@@ -14,7 +18,7 @@ const retrieveMenu = async () =>
     });
 
     return response;
-}
+};
 
 function menu()
 {
@@ -64,4 +68,39 @@ function addItem() {
 
 }
 
-window.onload = menu();
+function parseCookie(inp)
+{
+    let ca = inp.split(';');
+    let dict = {};
+    for(let i = 0; i < ca.length; i++)
+    {
+        let c = ca[i];
+        while(c.charAt(0) == ' ')
+        {
+            c= c.substring(1);
+        }
+        let len = 0;
+        while(c.charAt(len) != '=')
+        {
+            len++;
+        }
+        dict[c.substring(0, len)] = c.substring(len+1);
+    }
+    return dict;
+}
+let decCookie = decodeURIComponent(document.cookie);
+
+let info = parseCookie(decCookie);
+const session = info["SID"];
+const userid = info["UID"];
+const name = info["NAME"];
+
+window.onload = () =>{
+    var intid = startSessionChecker(session);
+    menu();
+    document.getElementById("logout").addEventListener('click', logout);
+};
+
+window.onbeforeunload = function(){
+    killSessionChecker(intid);
+};

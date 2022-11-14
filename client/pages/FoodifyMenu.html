@@ -7,17 +7,17 @@
     <link rel="stylesheet" href="../styles/FoodifyStyles.css">
 
     <script src="../scripts/jquery-3.6.1.js"></script>
-    <script src="../scripts/FoodifyScript.js"></script>
+    <script type="module" src="../scripts/FoodifyScript.js"></script>
 
     <title>Foodify Menu page</title>
 </head>
 
 <body>
-    <script src="../scripts/menuDisplay.js"></script>
+    <script type="module" src="../scripts/menuDisplay.js"></script>
     <div> 
         <img src="../resources/FoodifyPlacementLogo.png" alt="FoodifyLogo" style="float:left" width="15%" height="15%">
         <p style="text-align:right">
-            <button onclick=logout()>
+            <button id="logout">
                 Logout
             </button>
         </p>
@@ -27,28 +27,5 @@
         <h2> 
             Menu 
         </h2>
-
-
-        <!--<p>
-            <img class="menuImage" src="../resources/hot-dogs.jpg" alt="Hot dog">
-            <h3>
-                Hot dog <br>
-                3.99$ 
-            </h3>
-            <button onclick=addItem()>
-                Add item
-            </button>
-        </p>
-
-        <p>
-            <img class="menuImage" src="../resources/hamburgur.jpg" alt="Hamburgur">
-            <h3>
-                Hamburgur <br>
-                6.99$ 
-            </h3>
-            <button onclick=addItem()>
-                Add item
-            </button>
-        </p>-->
     </div>
 </body>
