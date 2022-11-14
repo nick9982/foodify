@@ -80,15 +80,16 @@ const session_resetter = async (to_verify, id, ip) =>
         var result = await sql.query(`
             SELECT * FROM EMP_SESSIONS WHERE SES_ID = '${id}';
         `);
-        console.log(ip);
         if(result.recordsets[0].length != 0)
         {
             if(result.recordsets[0][0]["IP"] != ip)
             {  
                 await sql.query(`
-                    DELETE FROM EMP_SESSIONS WHERE UID = '${id}';
+                    DELETE FROM EMP_SESSIONS WHERE SES_ID = '${id}';
                 `);
+                console.log("session killed");
                 clearInterval(intvals[id]);
+                delete intvals[id];
                 return false;
             }
         }
@@ -99,9 +100,11 @@ const session_resetter = async (to_verify, id, ip) =>
                 if(result.recordsets[0][0]["CLOCK"] == 4)
                 {
                     await sql.query(`
-                        DELETE FROM EMP_SESSIONS WHERE UID = '${id}';
+                        DELETE FROM EMP_SESSIONS WHERE SES_ID = '${id}';
                     `);
+                    console.log("session killed");
                     clearInterval(intvals[id]);
+                    delete intvals[id];
                 }
                 else
                 {
