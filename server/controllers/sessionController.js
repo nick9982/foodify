@@ -12,16 +12,23 @@ const handleSession = async (req, res) => {
     }
     if(!terminate)
     {
-        let response = session_resetter(true, id, ip);
-        if(response)
-            res.send({status: 2});
-        else
-            res.send({status: 1});
-        return;
+        session_resetter(true, id, ip)
+            .then(response =>{
+                if(response === true)
+                {
+                    res.send({status: 2});
+                }
+                else
+                {
+                    res.send({status: 1});
+                }
+                return;
+            });
     }
-
-    terminate_session(id);
-    res.send({status: 0});
-
+    else
+    {
+        terminate_session(id);
+        res.send({status: 0});
+    }
 };
 module.exports = {handleSession};

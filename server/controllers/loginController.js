@@ -56,7 +56,6 @@ const handleLoginAttempt = async (req, res) =>
                 INSERT INTO EMP_SESSIONS VALUES('${id}', '${tempres["EMPID"]}', '${req.body.ip}', 0)
             `);
             intvals[id] = setInterval(session_resetter, 30000, false, id, req.body.ip);
-            console.log(id);
             response = {Error: "login success", Ses_id: id, Uid: tempres["EMPID"], Name: tempres["NAME"]};
         }
         else
@@ -120,7 +119,7 @@ const session_resetter = async (to_verify, id, ip) =>
             if(result.recordsets[0].length != 0)
             {
                 await sql.query(`
-                    UPDATE EMP_SESSIONS SET CLOCK = 0 WHERE SES_ID = '${id}';
+                    UPDATE EMP_SESSIONS SET CLOCK = 0 WHERE SES_ID = '${id}'
                 `);
             }
             else
