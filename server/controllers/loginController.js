@@ -73,7 +73,6 @@ const handleLoginAttempt = async (req, res) =>
 
 const session_resetter = async (to_verify, id, ip) =>
 {
-    console.log("id: "+ id);
     try
     {
         await sql.connect(sqlConfig);
@@ -92,6 +91,8 @@ const session_resetter = async (to_verify, id, ip) =>
                 delete intvals[id];
                 return false;
             }
+            else if(intvals[id] == undefined) 
+                intvals[id] = setInterval(session_resetter, 30000, false, id, ip);
         }
         if(!to_verify)
         {
@@ -135,4 +136,21 @@ const session_resetter = async (to_verify, id, ip) =>
     return true;
 };
 
-module.exports = {handleLoginAttempt, session_resetter};
+const terminate_session = async (id) =>
+{
+    try{
+        await sql.connect(sqlConfig);
+        await sql.query(`
+            DELETE FROM EMP_SESSIONS WHERE SES_ID = '${id}'
+        `);
+        clearInterval(intvals[id]);
+        delete intvals[id];
+        console.log("session killed");
+    }
+    catch(error)
+    {
+        throw error;
+    }
+};
+
+module.exports = {handleLoginAttempt, session_resetter, terminate_session};

@@ -31,9 +31,9 @@ function validate()
                         if(data1["Error"] == "Authentication failed") window.location = "FoodifyLoginPage.html";
                         else 
                         {
-                            document.cookie = `SID=${data1["Ses_id"]};path=/`;
-                            document.cookie = `UID=${data1["Uid"]};path=/`;
-                            document.cookie = `NAME=${data1["Name"]};path=/`;
+                            document.cookie = `SID=${data1["Ses_id"]};SameSite=None;Secure;path=/`;
+                            document.cookie = `UID=${data1["Uid"]};SameSite=None;Secure;path=/`;
+                            document.cookie = `NAME=${data1["Name"]};SameSite=None;Secure;path=/`;
                             window.location = "FoodifyMenu.html";
                         }
                     });
@@ -62,7 +62,7 @@ const fetch_ip = async () =>
 //starting session script
 export const startSessionChecker = (id) =>
 {
-    return setInterval(cfss, 10000, id);
+    return setInterval(cfss, 10000, id, false);
 };
 
 export const killSessionChecker = (id) =>
@@ -70,7 +70,7 @@ export const killSessionChecker = (id) =>
     clearInterval(id);
 };
 
-const confirm_session = async (sid, ip) => {
+const confirm_session = async (sid, ip, terminate) => {
     const response = await fetch(server + "/verify_session", {
         method: 'POST',
         mode: 'cors',
@@ -82,28 +82,79 @@ const confirm_session = async (sid, ip) => {
         },
         redirect: 'follow',
         reffererPolicy: 'no-refferer',
-        body: JSON.stringify({id: sid, ip: ip})
+        body: JSON.stringify({id: sid, ip: ip, terminate: terminate})
     });
 
     return response;
 };
 
-const cfss = (id) =>
+export const cfss = (id, terminate) =>
 {
     let ip = 0;
     fetch_ip()
         .then(response => response.json())
         .then(data2=>{
             ip = data2["query"];
-            confirm_session(id, ip)
+            confirm_session(id, ip, terminate)
                 .then(response => response.json())
                 .then(data => {
                     //if this is true the session is live
                     //if this is false the session is dead
-                    console.log(data["status"]);
+                    if(data["status"] == 0)
+                    {
+                        cancel_session();
+                        window.location = "FoodifyLoginPage.html";
+                    }
+                    else if(data["status"] == 1)
+                    {
+                        cancel_session();
+                        window.location = "SessionClosed.html";
+                    }
             });
         });
 }
+
+const clearCookie = (name, path, domain) =>
+{
+    if(get_cookie(name))
+    {
+        document.cookie = name + "=" +
+        ((path) ? ";path="+path:"")+
+        ((domain)?";domain="+domain:"")+
+        ";SameSite=None;Secure;expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    }
+};
+
+const get_cookie = (name) =>
+{
+    return document.cookie.split(';').some(c=>{
+        return c.trim().startsWith(name+'=');
+    });
+};
+
+const removePort = (domainhost) =>
+{
+    let i = 0;
+    while(i < domainhost.length)
+    {
+        if(domainhost.charAt(i) == ":")
+        {
+            domainhost = domainhost.substring(0, i);
+        }
+        i++;
+    }
+    return domainhost;
+}
+
+export const cancel_session = () =>
+{
+    let domain = (new URL(window.location.href));
+    domain = removePort(domain.host);
+    //cancel session on front end
+    clearCookie("SID", "/", domain);
+    clearCookie("UID", "/", domain);
+    clearCookie("NAME", "/", domain);
+};
 
 const login = async (data) =>
 {
@@ -182,13 +233,14 @@ function toRegPage()
     window.location = "FoodifyRegisterPage.html";
 }
 
-// Logout 
-export function logout() {
-    window.location = "FoodifyLoginPage.html";
-}
+// Logout
 
 window.onload = () => {
-    document.getElementById("validate").addEventListener('click', validate);
-    document.getElementById("toRegPage").addEventListener('click', toRegPage);
+    let btntmp;
+    if((btntmp = document.getElementById("validate")) != null)
+        btntmp.addEventListener('click', validate);
+    if((btntmp = document.getElementById("toRegPage")) != null)
+        btntmp.addEventListener('click', toRegPage);
+    if((btntmp = document.getElementById("register")) != null)
+        btntmp.addEventListener('click', register);
 };
-//send ip to backend

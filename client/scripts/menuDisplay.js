@@ -1,6 +1,37 @@
-import {startSessionChecker, logout, killSessionChecker} from './FoodifyScript.js';
+import {startSessionChecker, killSessionChecker, cfss, cancel_session} from './FoodifyScript.js';
 
 const server = "http://localhost:8080";
+
+function parseCookie(inp)
+{
+    if(inp == '') return {};
+    let ca = inp.split(';');
+    let dict = {};
+    for(let i = 0; i < ca.length; i++)
+    {
+        let c = ca[i];
+        while(c.charAt(0) == ' ')
+        {
+            c= c.substring(1);
+        }
+        let len = 0;
+        while(c.charAt(len) != '=')
+        {
+            len++;
+        }
+        dict[c.substring(0, len)] = c.substring(len+1);
+    }
+    return dict;
+}
+let decCookie = decodeURIComponent(document.cookie);
+
+let info = parseCookie(decCookie);
+if(info.length == 0)
+    window.location = "FoodifyLoginPage.html";
+
+const session = info["SID"];
+const userid = info["UID"];
+const name = info["NAME"];
 
 const retrieveMenu = async () =>
 {
@@ -68,38 +99,19 @@ function addItem() {
 
 }
 
-function parseCookie(inp)
-{
-    let ca = inp.split(';');
-    let dict = {};
-    for(let i = 0; i < ca.length; i++)
-    {
-        let c = ca[i];
-        while(c.charAt(0) == ' ')
-        {
-            c= c.substring(1);
-        }
-        let len = 0;
-        while(c.charAt(len) != '=')
-        {
-            len++;
-        }
-        dict[c.substring(0, len)] = c.substring(len+1);
-    }
-    return dict;
-}
-let decCookie = decodeURIComponent(document.cookie);
-
-let info = parseCookie(decCookie);
-const session = info["SID"];
-const userid = info["UID"];
-const name = info["NAME"];
 var intid;
+
 window.onload = () =>{
+    cfss(session, false);
     intid = startSessionChecker(session);
     menu();
     document.getElementById("logout").addEventListener('click', logout);
 };
+
+function logout()
+{
+    cfss(session, true);
+}
 
 window.onbeforeunload = function(){
     killSessionChecker(intid);
