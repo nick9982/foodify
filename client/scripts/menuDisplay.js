@@ -105,6 +105,7 @@ window.onload = () =>{
     cfss(session, false);
     intid = startSessionChecker(session);
     menu();
+    document.body.addEventListener("unload", cancel_session);
     document.getElementById("logout").addEventListener('click', logout);
 };
 
