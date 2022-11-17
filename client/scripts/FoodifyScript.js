@@ -27,7 +27,6 @@ function validate()
                 login(data)
                     .then(response => response.json())
                     .then(data1 => {
-                        alert(data1["Error"]);
                         if(data1["Error"] == "Authentication failed") window.location = "FoodifyLoginPage.html";
                         else 
                         {
