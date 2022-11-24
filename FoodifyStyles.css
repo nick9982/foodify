@@ -1,5 +1,5 @@
 body {
-    background-color: #4e4b48;
+    background-color: #ff8800;
 }
 
 h1 {
@@ -29,31 +29,6 @@ p {
     font-family: Segoe UI;
     font-weight: bold;
     color: white;
-}
-
-table {
-    padding: 0;
-    margin: auto;
-    border-collapse: collapse;
-    width: 50%;
-    text-align: center;
-    font-family: Segoe UI;
-    font-weight: bold;
-    color: whitesmoke;
-}
-
-table tr td {
-
-    height: 25px;
-    
-}
-
-tr:nth-child(1) {
-    background-color: grey;
-}
-
-tr:nth-child(even) {
-    background-color: rgb(68, 68, 68);
 }
 
 .menuImage {  
@@ -98,10 +73,10 @@ input[type=submit] {
 
 button {
     display: inline-block;
-        background-color: #4e4b48;
+        background-color: white;
         border-radius: 10px;
         border: 4px double #ff8800;
-        color: #ffffff;
+        color: #ff8800;
         text-align: center;
         font-size: 28px;
         padding: 20px;
@@ -109,21 +84,6 @@ button {
         transition: all 0.5s;
         cursor: pointer;
         margin: 5px;
-}
-
-#completedBtn {
-    display: inline-block;
-        background-color: #4e4b48;
-        border-radius: 10px;
-        border: 4px double #ff8800;
-        color: #ffffff;
-        text-align: center;
-        font-size: 15px;
-        padding: 5px;
-        width: 150px;
-        transition: all 0.5s;
-        cursor: pointer;
-        margin: 1px;
 }
 
 button span, input[type=submit] span {

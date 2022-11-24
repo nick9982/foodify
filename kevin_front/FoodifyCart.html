@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Kevin Robles">
+
+    <link rel="stylesheet" href="FoodifyStyles.css">
+
+    <script src="jquery-3.6.1.js"></script>
+    <script src="FoodifyScript.js"></script>
+
+    <title>Foodify Menu page</title>
+</head>
+
+
+<body>
+    <div> 
+        <img src="FoodifyPlacementLogo.png" alt="FoodifyLogo" style="float:left" width="15%" height="15%">
+        <p style="text-align:right">
+            <button onclick=logout()>
+                Logout
+            </button>
+        </p>
+        <h2 style="text-align:center"> 
+            Cart 
+        </h2>
+    </div>
+
+    <div id="cart-table">
+        <table id="html-cart-table">
+            <tr>
+                <th>Menu Item</th>
+                <th>Item Quantity</th>
+                <th>Item Cost</th>
+            </tr>
+            <tr>
+                <td>Hot dog</td>
+                <td>2</td>
+                <td>$3.99</td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <button onclick=Order()>
+            Order now
+        </button>
+    </div>
+
+    <script type="text/javascript" charset=""utf-8>
+        // was intended to take in temporary data but retriving from file isnt possible, will work with api 
+        fetch("https://jsonplaceholder.typicode.com/todos")
+        .then(function (response) {
+            return response.json();
+        }).then(function (apiJsonData) {
+            console.log(apiJsonData);
+            renderDataInTheTable(apiJsonData);
+        })
+
+        function renderDataInTheTable(todos) {
+            const mytable = document.getElementById("html-cart-table");
+            todos.forEach(todo => {
+                let newRow = document.createElement("tr");
+                Object.values(todo).forEach((value) => {
+                    let cell = document.createElement("td");
+                    cell.innerText = value;
+                    newRow.appendChild(cell);
+                })
+                mytable.appendChild(newRow);
+            });
+        }
+    </script>
+</body>
