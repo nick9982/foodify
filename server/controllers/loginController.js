@@ -40,7 +40,6 @@ const handleLoginAttempt = async (req, res) =>
         }
         if(result.recordsets[0].length == 1)
         {
-
             //start session
             let id_has_gen = false;
             while(result.recordsets[0].length != 0 || !id_has_gen)
@@ -76,14 +75,14 @@ const session_resetter = async (to_verify, id, ip) =>
     {
         await sql.connect(sqlConfig);
         var result = await sql.query(`
-            SELECT * FROM EMP_SESSIONS WHERE SES_ID = '${id}';
+            SELECT * FROM EMP_SESSIONS WHERE SES_ID = '${id}'
         `);
         if(result.recordsets[0].length != 0)
         {
             if(result.recordsets[0][0]["IP"] != ip)
             {  
                 await sql.query(`
-                    DELETE FROM EMP_SESSIONS WHERE SES_ID = '${id}';
+                    DELETE FROM EMP_SESSIONS WHERE SES_ID = '${id}'
                 `);
                 console.log("session killed");
                 clearInterval(intvals[id]);
