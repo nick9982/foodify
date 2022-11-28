@@ -1,3 +1,5 @@
+const server = "http://localhost:8080";
+
 function validate()
 {
     var username=document.getElementById("UN").value;
@@ -35,8 +37,101 @@ function validate()
     }
 }
 
+export const startSessionChecker = (id) =>
+{
+    return setInterval(cfss, 10000, id, false);
+};
 
-const server = "http://localhost:8080";
+export const killSessionChecker = (id) =>
+{
+    clearInterval(id);
+}
+
+const confirm_session = async (sid, ip, terminate) => {
+    const response = await fetch(server + "/verify_session", {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        redirect: 'follow',
+        reffererPolicy: 'no-refferer',
+        body: JSON.stringify({id: sid, ip: ip, terminate: terminate, accType: "customer"})
+    });
+
+    return response;
+};
+
+export const cfss = (id, terminate) =>
+{
+    let ip = 0;
+    fetch_ip()
+        .then(response => response.json())
+        .then(data2=>{
+            ip = data2["query"];
+            confirm_session(id, ip, terminate)
+                .then(response => response.json())
+                .then(data => {
+                    //if this is true the session is live
+                    //if this is false the session is dead
+                    if(data["status"] == 0)
+                    {
+                        cancel_session();
+                        window.location = "login.html";
+                    }
+                    else if(data["status"] == 1)
+                    {
+                        cancel_session();
+                        window.location = "SessionClosed.html";
+                    }
+            });
+        });
+}
+
+const clearCookie = (name, path, domain) =>
+{
+    if(get_cookie(name))
+    {
+        document.cookie = name + "=" +
+        ((path) ? ";path="+path:"")+
+        ((domain)?";domain="+domain:"")+
+        ";SameSite=None;Secure;expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    }
+};
+
+const get_cookie = (name) =>
+{
+    return document.cookie.split(';').some(c=>{
+        return c.trim().startsWith(name+'=');
+    });
+};
+
+const removePort = (domainhost) =>
+{
+    let i = 0;
+    while(i < domainhost.length)
+    {
+        if(domainhost.charAt(i) == ":")
+        {
+            domainhost = domainhost.substring(0, i);
+        }
+        i++;
+    }
+    return domainhost;
+}
+
+export const cancel_session = () =>
+{
+    let domain = (new URL(window.location.href));
+    domain = removePort(domain.host);
+    //cancel session on front end
+    clearCookie("SID", "/", domain);
+    clearCookie("UID", "/", domain);
+    clearCookie("NAME", "/", domain);
+};
 
 const fetch_ip = async () =>
 {

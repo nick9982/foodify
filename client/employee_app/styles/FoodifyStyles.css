@@ -146,7 +146,9 @@ button:hover, input[type=submit]:hover {
     background-color: orange;
     color: white;
 }
-
+#home:hover{
+    cursor:pointer;
+}
 button:hover span, input[type=submit]:hover span {
     padding-right: 25px;
 }

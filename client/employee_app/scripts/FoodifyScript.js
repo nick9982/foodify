@@ -1,10 +1,3 @@
-// this doesnt work
-//$(document).ready(function(){
-//    $("#div1").fadeIn();
-//    $("#div1").animate({down: '50px'});
-
-//});
-
 const server = "http://localhost:8080";
 
 function validate()
@@ -82,7 +75,7 @@ const confirm_session = async (sid, ip, terminate) => {
         },
         redirect: 'follow',
         reffererPolicy: 'no-refferer',
-        body: JSON.stringify({id: sid, ip: ip, terminate: terminate})
+        body: JSON.stringify({id: sid, ip: ip, terminate: terminate, accType: "employee"})
     });
 
     return response;

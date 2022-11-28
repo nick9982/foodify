@@ -4,7 +4,9 @@ const sql = require('mssql');
 const handleSession = async (req, res) => {
     let id = req.body.id;
     let ip = req.body.ip;
+    let accType = req.body.accType;
     let terminate = req.body.terminate;
+    //console.log(req.body.accType);
     if(id == undefined)
     {
         res.send({status: 0});
@@ -12,7 +14,7 @@ const handleSession = async (req, res) => {
     }
     if(!terminate)
     {
-        session_resetter(true, id, ip)
+        session_resetter(true, id, ip, accType)
             .then(response =>{
                 if(response === true)
                 {

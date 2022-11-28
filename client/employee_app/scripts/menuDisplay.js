@@ -1,7 +1,10 @@
 import {startSessionChecker, killSessionChecker, cfss, cancel_session} from './FoodifyScript.js';
 
 const server = "http://localhost:8080";
+/*
+RETRIEVING THE SESSION VARIABLES
 
+*/
 function parseCookie(inp)
 {
     if(inp == '') return {};
@@ -32,6 +35,10 @@ if(info.length == 0)
 const session = info["SID"];
 const userid = info["UID"];
 const name = info["NAME"];
+
+/*
+END OF RETREIVING AND SETTING SESSION VARIABLES
+*/
 
 const retrieveMenu = async () =>
 {
@@ -99,8 +106,10 @@ function addItem() {
 
 }
 
-var intid;
 
+//SESSION EVENT HANDLERS
+
+var intid;
 window.onload = () =>{
     cfss(session, false);
     intid = startSessionChecker(session);
@@ -109,11 +118,10 @@ window.onload = () =>{
     document.getElementById("logout").addEventListener('click', logout);
 };
 
+window.onbeforeunload = function(){
+    killSessionChecker(intid);
+};
 function logout()
 {
     cfss(session, true);
 }
-
-window.onbeforeunload = function(){
-    killSessionChecker(intid);
-};

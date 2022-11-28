@@ -119,7 +119,7 @@ const handleLoginAttempt = async (req, res) =>
     res.send(JSON.stringify(response));
 }
 
-const session_resetter = async (to_verify, id, ip) =>
+const session_resetter = async (to_verify, id, ip, accType) =>
 {
     try
     {
@@ -129,6 +129,14 @@ const session_resetter = async (to_verify, id, ip) =>
         `);
         if(result.recordsets[0].length != 0)
         {
+            var AT = result.recordsets[0][0]["CLIENT_TYPE"];
+            if(AT != accType)
+            {
+                await sql.query(`
+                    DELETE FROM SESSIONS WHERE SES_ID = '${id}'
+                `);
+                return false;
+            }
             if(result.recordsets[0][0]["IP"] != ip)
             {  
                 await sql.query(`
@@ -142,6 +150,7 @@ const session_resetter = async (to_verify, id, ip) =>
             else if(intvals[id] == undefined) 
                 intvals[id] = setInterval(session_resetter, 30000, false, id, ip);
         }
+        else return false;
         if(!to_verify)
         {
             if(result.recordsets[0].length != 0)
