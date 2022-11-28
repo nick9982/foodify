@@ -22,6 +22,7 @@ function validate()
                 let data = {
                     Username: username,
                     Password: password,
+                    clientType: "employee",
                     ip: ipadd
                 };
                 login(data)
