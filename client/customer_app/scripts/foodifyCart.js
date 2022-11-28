@@ -54,7 +54,6 @@ window.onload = () =>{
 
 function toHome()
 {
-    console.log("tohome");
     window.location = "index.html";
 }
 
