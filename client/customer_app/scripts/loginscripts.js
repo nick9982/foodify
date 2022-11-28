@@ -14,6 +14,7 @@ function validate()
             .then(response => response.json())
             .then(data2=>{
                 let ipadd = data2["query"];
+                //console.log(ipadd);
                 let data = {
                     Username: username,
                     Password: password,

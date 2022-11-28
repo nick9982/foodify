@@ -119,7 +119,7 @@ const handleLoginAttempt = async (req, res) =>
     res.send(JSON.stringify(response));
 }
 
-const session_resetter = async (to_verify, id, ip, accType) =>
+const session_resetter = async (to_verify, id, ip, accType = "") =>
 {
     try
     {
@@ -130,7 +130,7 @@ const session_resetter = async (to_verify, id, ip, accType) =>
         if(result.recordsets[0].length != 0)
         {
             var AT = result.recordsets[0][0]["CLIENT_TYPE"];
-            if(AT != accType)
+            if(AT != accType && to_verify)
             {
                 await sql.query(`
                     DELETE FROM SESSIONS WHERE SES_ID = '${id}'
@@ -142,7 +142,6 @@ const session_resetter = async (to_verify, id, ip, accType) =>
                 await sql.query(`
                     DELETE FROM SESSIONS WHERE SES_ID = '${id}'
                 `);
-                console.log("session killed");
                 clearInterval(intvals[id]);
                 delete intvals[id];
                 return false;
@@ -158,7 +157,7 @@ const session_resetter = async (to_verify, id, ip, accType) =>
                 if(result.recordsets[0][0]["CLOCK"] == 4)
                 {
                     await sql.query(`
-                        DELETE FROM SESSIONS WHERE SES_ID = '${id}';
+                        DELETE FROM SESSIONS WHERE SES_ID = '${id}'
                     `);
                     console.log("session killed");
                     clearInterval(intvals[id]);
@@ -167,7 +166,7 @@ const session_resetter = async (to_verify, id, ip, accType) =>
                 else
                 {
                     await sql.query(`
-                        UPDATE SESSIONS SET CLOCK = ${result.recordsets[0][0]["CLOCK"]+1} WHERE SES_ID = '${id}';
+                        UPDATE SESSIONS SET CLOCK = ${result.recordsets[0][0]["CLOCK"]+1} WHERE SES_ID = '${id}'
                     `);
                 }
             }
