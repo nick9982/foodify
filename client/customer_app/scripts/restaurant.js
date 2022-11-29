@@ -58,7 +58,7 @@ const orderMenu = () =>
                 const parent = document.createElement("tr");
 
                 const title = document.createElement("td");
-                title.innerHTML = tuple["Name"] + "  <br>$" + tuple["Price"];
+                title.innerHTML = tuple["Name"];
 
                 const prc = document.createElement("td");
                 prc.innerHTML = tuple["Price"] + " $";
