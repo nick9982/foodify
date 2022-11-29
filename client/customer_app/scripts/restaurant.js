@@ -67,11 +67,13 @@ const orderMenu = () =>
                 const img = document.createElement("img");
                 img.setAttribute('src', tuple["urlToImg"]);
                 img.setAttribute('alt', tuple["Name"] + " image");
+                img.setAttribute("class", "menuBtn1");
                 imgcont.appendChild(img);
                 
                 const btncontainer = document.createElement("td");
                 const button = document.createElement("button");
                 button.onclick = selectItem(i);
+                button.setAttribute("class", "menuBtn1");
                 btncontainer.appendChild(button);
 
                 parent.appendChild(title);
