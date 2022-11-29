@@ -44,7 +44,69 @@ else
 END OF RETREIVING AND SETTING SESSION VARIABLES
 */
 
+const orderMenu = () =>
+{
+    retrieveMenu()
+        .then(response => response.json())
+        .then(data =>{
+            const arr = data[0];
+            const menu = document.createElement("table");
 
+            for(let i = 0; i < arr.length; i++)
+            {
+                const tuple = arr[i];
+                const parent = document.createElement("tr");
+
+                const title = document.createElement("td");
+                title.innerHTML = tuple["Name"] + "  <br>$" + tuple["Price"];
+
+                const prc = document.createElement("td");
+                prc.innerHTML = tuple["Price"] + " $";
+
+                const imgcont = document.createElement("td");
+                const img = document.createElement("img");
+                img.setAttribute('src', tuple["urlToImg"]);
+                img.setAttribute('alt', tuple["Name"] + " image");
+                imgcont.appendChild(img);
+
+                const button = document.createElement("button");
+                button.onclick = selectItem(i);
+
+                parent.appendChild(title);
+                parent.appendChild(prc);
+                parent.appendChild(imgcont);
+                parent.appendChild(button);
+
+                menu.appendChild(parent);
+            }
+            document.body.appendChild(menu);
+            menu.style.align = "center";
+        });
+};
+
+
+function selectItem(i)
+{
+    console.log(i);
+}
+
+const retrieveMenu = async () =>
+{
+    const response = await fetch(server + "/view_menu", {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        redirect: 'follow',
+        reffererPolicy: 'no-refferer'
+    });
+
+    return response;
+};
 
 //SESSION EVENT HANDLERS
 var intid;
@@ -54,6 +116,7 @@ window.onload = () =>{
     //document.body.addEventListener("unload", cancel_session);
     document.getElementById("logout").addEventListener('click', logout);
     document.getElementById("cartbtn").addEventListener('click', toCart);
+    orderMenu();
 };
 
 function toCart()
