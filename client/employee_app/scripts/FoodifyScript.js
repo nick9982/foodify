@@ -151,7 +151,13 @@ export const cancel_session = () =>
     clearCookie("SID", "/", domain);
     clearCookie("UID", "/", domain);
     clearCookie("NAME", "/", domain);*/
+    let sid = window.localStorage.getItem("SID");
+    let uid = window.localStorage.getItem("UID");
+    let name = window.localStorage.getItem("NAME");
     window.localStorage.clear();
+    window.localStorage.setItem("tmpSID", sid);
+    window.localStorage.setItem("tmpUID", uid);
+    window.localStorage.setItem("tmpNAME", name);
 };
 
 const login = async (data) =>
