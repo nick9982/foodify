@@ -28,18 +28,19 @@ const handleGetAllOrders = async (req, res) => {
 }
 
 const handleTakeOrder = async (req, res) => {
+    const order = req.body.OrderIDs;
+    console.log(order);
     try {
         await sql.connect(sqlConfig);
-        const order = req.body.Order;
-        console.log(order);
 
         var result = await sql.query(`
-        select * from Orders
+        insert into ORDERS
+        VALUES (${order[0], order[1]}, )
         `);
     } catch (error) {
         throw error;
     }
-    res.send(JSON.stringify(order));
+    res.send(order);
 }
 
 module.exports = {handleGetAllOrders, handleTakeOrder};
