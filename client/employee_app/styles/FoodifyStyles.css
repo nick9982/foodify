@@ -1,26 +1,26 @@
 body {
-    background-color: #4e4b48;
+    background-color: rgb(254, 216, 160);
 }
 
 h1 {
     text-align: center;
     font-size: 50px;
     font-family: Segoe UI;
-    color: white;   
+    color: black;   
 }
 
 h2 {
     text-align: center;
     font-size: 75px;
     font-family: Segoe UI;
-    color: white;
+    color: black;
 }
 
 h3 {
     text-align: center;
     font-size: 25px;
     font-family: Segoe UI;
-    color: white;
+    color: black;
 }
 
 p {
@@ -28,7 +28,7 @@ p {
     font-size: 20px;
     font-family: Segoe UI;
     font-weight: bold;
-    color: white;
+    color: black;
 }
 
 table {
@@ -39,7 +39,7 @@ table {
     text-align: center;
     font-family: Segoe UI;
     font-weight: bold;
-    color: whitesmoke;
+    color: black;
 }
 
 table tr td {
@@ -49,11 +49,11 @@ table tr td {
 }
 
 tr:nth-child(1) {
-    background-color: grey;
+    background-color: burlywood;
 }
 
 tr:nth-child(even) {
-    background-color: rgb(68, 68, 68);
+    background-color: white;
 }
 
 .menuImage {  
@@ -98,10 +98,10 @@ input[type=submit] {
 
 button {
     display: inline-block;
-        background-color: #4e4b48;
+        background-color: white;
         border-radius: 10px;
         border: 4px double #ff8800;
-        color: #ffffff;
+        color: black;
         text-align: center;
         font-size: 28px;
         padding: 20px;
@@ -116,7 +116,7 @@ button {
         background-color: #4e4b48;
         border-radius: 10px;
         border: 4px double #ff8800;
-        color: #ffffff;
+        color: black;
         text-align: center;
         font-size: 15px;
         padding: 5px;
