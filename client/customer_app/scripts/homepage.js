@@ -6,7 +6,7 @@ const server = "http://localhost:8080";
 RETRIEVING THE SESSION VARIABLES
 
 */
-function parseCookie(inp)
+/*function parseCookie(inp)
 {
     if(inp == '') return {};
     let ca = inp.split(';');
@@ -27,15 +27,22 @@ function parseCookie(inp)
     }
     return dict;
 }
-let decCookie = decodeURIComponent(document.cookie);
+let decCookie = decodeURIComponent(document.cookie);*/
 
-let info = parseCookie(decCookie);
+/*let info = parseCookie(decCookie);
 if(info.length == 0)
-    window.location = "FoodifyLoginPage.html";
+    window.location = "FoodifyLoginPage.html";*/
+const localStorage = window.localStorage;
 
-const session = info["SID"];
-const userid = info["UID"];
-const name = info["NAME"];
+try {
+    var session = localStorage.getItem("SID");
+    var userid = localStorage.getItem("UID");
+    var name = localStorage.getItem("NAME");
+} catch(e)
+{
+    window.location = "login.html";
+}
+if(session == null || userid == null || name == null) window.location = "login.html";
 
 /*
 END OF RETREIVING AND SETTING SESSION VARIABLES
