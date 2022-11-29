@@ -40,6 +40,8 @@ function validate()
 
 export const startSessionChecker = (id) =>
 {
+    //60000 is more performant and still gets the job done
+    //this is just to show the ip address feature easily.
     return setInterval(cfss, 10000, id, false);
 };
 
