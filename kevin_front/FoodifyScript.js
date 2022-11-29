@@ -35,3 +35,7 @@ function addItem() {
 function logout() {
 
 }
+
+function orderPage() {
+    window.open("FoodifyOrderQueue.html");
+}
