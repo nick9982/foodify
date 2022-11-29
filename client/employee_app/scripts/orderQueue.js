@@ -36,6 +36,7 @@ function to_home()
 }
 
 window.onbeforeunload = function(){
+    cancel_session();
     killSessionChecker(intid);
 };
 

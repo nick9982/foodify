@@ -98,6 +98,7 @@ window.onload = () =>{
 };
 
 window.onbeforeunload = function(){
+    cancel_session();
     killSessionChecker(intid);
 };
 function logout()
