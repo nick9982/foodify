@@ -16,6 +16,7 @@ app.use('/create_account', require('./routes/create_acc'));
 app.use('/login', require('./routes/login'));
 
 app.use('/view_menu', require('./routes/viewMenu'));
+app.use('/view_orders', require('./routes/order'));
 
 app.use('/verify_session', require('./routes/session'));
 
