@@ -14,6 +14,7 @@ const sqlConfig = {
         trustServerCertificate: false,
     },
 };
+let ID = 1;
 
 const handleGetAllOrders = async (req, res) => {
     try {
@@ -28,19 +29,26 @@ const handleGetAllOrders = async (req, res) => {
 }
 
 const handleTakeOrder = async (req, res) => {
-    const order = req.body.OrderIDs;
+    const order = req.body.orderIDs;
     console.log(order);
     try {
         await sql.connect(sqlConfig);
 
+        // var result = await sql.query(`
+        // insert into ORDERS (ORDER_ID, C_NAME, ORDER_DATE, ORDER_DETAILS) 
+        // VALUES ('${ID}', 'JOHNNY', '${Date()}', '${order}');
+        // `);
+
         var result = await sql.query(`
-        insert into ORDERS
-        VALUES (${order[0], order[1]}, )
+        select * from ORDERS;
         `);
     } catch (error) {
+        console.log('ERROR ERROR ERROR ERROR ERROR:');
         throw error;
     }
-    res.send(order);
+    console.log(result);
+    ID = ID + 1;
+    res.status(201).send("CREATED");
 }
 
 module.exports = {handleGetAllOrders, handleTakeOrder};
