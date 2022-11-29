@@ -43,7 +43,7 @@ else
 /*
 END OF RETREIVING AND SETTING SESSION VARIABLES
 */
-
+var hasBeenDeclared = false;
 const orderMenu = () =>
 {
     retrieveMenu()
@@ -68,20 +68,25 @@ const orderMenu = () =>
                 img.setAttribute('src', tuple["urlToImg"]);
                 img.setAttribute('alt', tuple["Name"] + " image");
                 imgcont.appendChild(img);
-
+                
+                const btncontainer = document.createElement("td");
                 const button = document.createElement("button");
                 button.onclick = selectItem(i);
+                btncontainer.appendChild(button);
 
                 parent.appendChild(title);
                 parent.appendChild(prc);
                 parent.appendChild(imgcont);
-                parent.appendChild(button);
+                parent.appendChild(btncontainer);
 
                 menu.appendChild(parent);
             }
             document.body.appendChild(menu);
             menu.style.align = "center";
         });
+        hasBeenDeclared = true;
+
+
 };
 
 
