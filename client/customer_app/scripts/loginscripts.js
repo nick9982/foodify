@@ -5,54 +5,39 @@ function validate()
     var username=document.getElementById("UN").value;
     var password=document.getElementById("PW").value;
 
-    if(username == '' || password == '') alert("All fields required");
+    if(username == '' || password == '') alert('All fields required');
     else
     {
+        //fetch ip into login in the backend
+        //set cookies upon validation and then set location to the home page
         fetch_ip()
             .then(response => response.json())
             .then(data2=>{
                 let ipadd = data2["query"];
+                //console.log(ipadd);
                 let data = {
                     Username: username,
                     Password: password,
-                    clientType: "employee",
+                    clientType: "customer",
                     ip: ipadd
                 };
                 login(data)
                     .then(response => response.json())
                     .then(data1 => {
-                        if(data1["Error"] == "Authentication failed") window.location = "FoodifyLoginPage.html";
-                        else 
+                        alert(data1["Error"]);
+                        if(data1["Error"] == "Authentication failed") window.location = "login.html";
+                        else
                         {
                             document.cookie = `SID=${data1["Ses_id"]};SameSite=None;Secure;path=/`;
                             document.cookie = `UID=${data1["Uid"]};SameSite=None;Secure;path=/`;
                             document.cookie = `NAME=${data1["Name"]};SameSite=None;Secure;path=/`;
-                            window.location = "FoodifyMenu.html";
+                            window.location = "index.html";
                         }
                     });
-            });
+            })
     }
 }
 
-const fetch_ip = async () =>
-{
-    const response = await fetch("http://ip-api.com/json", {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        redirect: 'follow',
-        reffererPolicy: 'no-refferer',
-    });
-
-    return response;
-}
-
-//starting session script
 export const startSessionChecker = (id) =>
 {
     return setInterval(cfss, 10000, id, false);
@@ -61,7 +46,7 @@ export const startSessionChecker = (id) =>
 export const killSessionChecker = (id) =>
 {
     clearInterval(id);
-};
+}
 
 const confirm_session = async (sid, ip, terminate) => {
     const response = await fetch(server + "/verify_session", {
@@ -75,7 +60,7 @@ const confirm_session = async (sid, ip, terminate) => {
         },
         redirect: 'follow',
         reffererPolicy: 'no-refferer',
-        body: JSON.stringify({id: sid, ip: ip, terminate: terminate, accType: "employee"})
+        body: JSON.stringify({id: sid, ip: ip, terminate: terminate, accType: "customer"})
     });
 
     return response;
@@ -96,7 +81,7 @@ export const cfss = (id, terminate) =>
                     if(data["status"] == 0)
                     {
                         cancel_session();
-                        window.location = "FoodifyLoginPage.html";
+                        window.location = "login.html";
                     }
                     else if(data["status"] == 1)
                     {
@@ -149,6 +134,62 @@ export const cancel_session = () =>
     clearCookie("NAME", "/", domain);
 };
 
+const fetch_ip = async () =>
+{
+    const response = await fetch("http://ip-api.com/json", {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        redirect: 'follow',
+        reffererPolicy: 'no-refferer',
+    });
+
+    return response;
+}
+
+function backToLogin()
+{
+    window.location = "login.html";
+}
+
+function toRegPage()
+{
+    window.location = "create_account.html";
+}
+
+function register()
+{
+    var name = document.getElementById("NM").value;
+    var username=document.getElementById("UN").value;
+    var password=document.getElementById("PW").value;
+    var re_enteredPassword = document.getElementById("RPW").value;
+    if(name == '' || username == '' || password == '' || re_enteredPassword == '')
+    {
+        alert('All fields required');
+    }
+    else
+    {   
+        let data = {
+            Username: username,
+            Password: password,
+            Re_enteredPassword: re_enteredPassword,
+            Name: name
+        };
+        //backend api call
+        create_acc(data)
+            .then(response => response.json())
+            .then(data => {
+                alert(data["Error"]);
+                if(data["Error"] == "Account created successfully") window.location = "login.html";
+            })
+    }
+}
+
 const login = async (data) =>
 {
     const response = await fetch(server + "/login", {
@@ -168,43 +209,9 @@ const login = async (data) =>
     return response;
 };
 
-function register() {
-    var name = document.getElementById("NM").value;
-    var username=document.getElementById("UN").value;
-    var password=document.getElementById("PW").value;
-    var re_enteredPassword = document.getElementById("RPW").value;
-    const buttons = document.getElementsByClassName("radiobtn");
-    var role = '';
-    if(buttons[0].checked) role = "Employee";
-    if(buttons[1].checked) role = "Manager";
-    
-    if(name == '' || username == '' || password == '' || re_enteredPassword == '' || role == '')
-    {
-        alert('All fields required');
-    }
-    else
-    {
-        // Connect with backend to create new account
-        let data = {
-            Username: username,
-            Password: password,
-            Re_enteredPassword: re_enteredPassword,
-            Name: name,
-            Employee_type: role
-        };
-
-        create_acc(data)
-            .then(response => response.json())
-            .then(data => {
-                alert(data["Error"]);
-                if(data["Error"] == "Account created successfully") window.location = 'FoodifyLoginPage.html';
-            });
-    }
-}
-
 const create_acc = async (data) =>
 {
-    const response = await fetch(server + "/create_account", {
+    const response = await fetch(server + "/customer_register", {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -221,19 +228,15 @@ const create_acc = async (data) =>
     return response;
 };
 
-function toRegPage()
+window.onload = () =>
 {
-    window.location = "FoodifyRegisterPage.html";
-}
-
-// Logout
-
-window.onload = () => {
     let btntmp;
-    if((btntmp = document.getElementById("validate")) != null)
+    if((btntmp = document.getElementById("backtologin")) != null)
+        btntmp.addEventListener('click', backToLogin);
+    if((btntmp = document.getElementById("register")) != null)
+        btntmp.addEventListener('click', register);
+    if((btntmp = document.getElementById("login")) != null)
         btntmp.addEventListener('click', validate);
     if((btntmp = document.getElementById("toRegPage")) != null)
         btntmp.addEventListener('click', toRegPage);
-    if((btntmp = document.getElementById("register")) != null)
-        btntmp.addEventListener('click', register);
 };
