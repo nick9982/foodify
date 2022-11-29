@@ -92,7 +92,10 @@ const orderMenu = () =>
 
 function selectItem(i)
 {
-    console.log(i);
+    if(hasBeenDeclared)
+    {
+        console.log(i);
+    }
 }
 
 const retrieveMenu = async () =>
