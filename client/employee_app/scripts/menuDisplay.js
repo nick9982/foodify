@@ -5,37 +5,38 @@ const server = "http://localhost:8080";
 RETRIEVING THE SESSION VARIABLES
 
 */
-function parseCookie(inp)
+const localStorage = window.localStorage;
+let tabCount = parseInt(localStorage.getItem("windowCounterEmp"));
+tabCount = Number.isNaN(tabCount) ? 1 : ++tabCount;
+
+if(performance.getEntriesByType("navigation")[0].type == "reload"
+|| document.referrer == "http://127.0.0.1:5500/client/employee_app/pages/FoodifyOrderQueue.html"
+|| document.referrer == "http://127.0.0.1:5500/client/employee_app/pages/FoodifyMenu.html")
 {
-    if(inp == '') return {};
-    let ca = inp.split(';');
-    let dict = {};
-    for(let i = 0; i < ca.length; i++)
-    {
-        let c = ca[i];
-        while(c.charAt(0) == ' ')
-        {
-            c= c.substring(1);
-        }
-        let len = 0;
-        while(c.charAt(len) != '=')
-        {
-            len++;
-        }
-        dict[c.substring(0, len)] = c.substring(len+1);
-    }
-    return dict;
+    localStorage.setItem("SID", localStorage.getItem("tmpSID"));
+    localStorage.setItem("UID", localStorage.getItem("tmpUID"));
+    localStorage.setItem("NAME", localStorage.getItem("tmpNAME"));
+    localStorage.removeItem("tmpSID");
+    localStorage.removeItem("tmpUID");
+    localStorage.removeItem("tmpNAME");
 }
-let decCookie = decodeURIComponent(document.cookie);
 
-let info = parseCookie(decCookie);
-if(info.length == 0)
+try {
+    var session = localStorage.getItem("SID");
+    var userid = localStorage.getItem("UID");
+    var name = localStorage.getItem("NAME");
+} catch(e)
+{
     window.location = "FoodifyLoginPage.html";
-
-const session = info["SID"];
-const userid = info["UID"];
-const name = info["NAME"];
-
+}
+if(session == null || userid == null || name == null)
+{
+    window.location = "FoodifyLoginPage.html";
+}
+else
+{    
+    localStorage.setItem("windowCounterEmp", tabCount.toString());
+}
 /*
 END OF RETREIVING AND SETTING SESSION VARIABLES
 */
@@ -119,8 +120,12 @@ window.onload = () =>{
 };
 
 window.onbeforeunload = function(){
+    let tabCount = parseInt(localStorage.getItem("windowCounterEmp"));
+    localStorage.setItem("windowCounterEmp", --tabCount);
+    if(tabCount == 0) cancel_session();
     killSessionChecker(intid);
 };
+
 function logout()
 {
     cfss(session, true);

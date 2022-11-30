@@ -28,9 +28,13 @@ function validate()
                         if(data1["Error"] == "Authentication failed") window.location = "login.html";
                         else
                         {
-                            document.cookie = `SID=${data1["Ses_id"]};SameSite=None;Secure;path=/`;
+                            /*document.cookie = `SID=${data1["Ses_id"]};SameSite=None;Secure;path=/`;
                             document.cookie = `UID=${data1["Uid"]};SameSite=None;Secure;path=/`;
-                            document.cookie = `NAME=${data1["Name"]};SameSite=None;Secure;path=/`;
+                            document.cookie = `NAME=${data1["Name"]};SameSite=None;Secure;path=/`;*/
+                            const localStorage = window.localStorage;
+                            localStorage.setItem("SID", data1["Ses_id"]);
+                            localStorage.setItem("UID", data1["Uid"]);
+                            localStorage.setItem("NAME", data1["Name"]);
                             window.location = "index.html";
                         }
                     });
@@ -128,12 +132,22 @@ const removePort = (domainhost) =>
 
 export const cancel_session = () =>
 {
-    let domain = (new URL(window.location.href));
+   /* let domain = (new URL(window.location.href));
     domain = removePort(domain.host);
     //cancel session on front end
     clearCookie("SID", "/", domain);
     clearCookie("UID", "/", domain);
-    clearCookie("NAME", "/", domain);
+    clearCookie("NAME", "/", domain);*/
+    let sid = window.localStorage.getItem("SID");
+    let uid = window.localStorage.getItem("UID");
+    let name = window.localStorage.getItem("NAME");
+    let cart = window.localStorage.getItem("cart");
+    window.localStorage.clear();
+    window.localStorage.setItem("tmpSID", sid);
+    window.localStorage.setItem("tmpUID", uid);
+    window.localStorage.setItem("tmpNAME", name);
+    window.localStorage.setItem("tmpCart", cart);
+    //window.location = "mooaps.html";
 };
 
 const fetch_ip = async () =>

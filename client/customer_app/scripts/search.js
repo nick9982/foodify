@@ -6,37 +6,42 @@ const server = "http://localhost:8080";
 RETRIEVING THE SESSION VARIABLES
 
 */
-function parseCookie(inp)
+const localStorage = window.localStorage;
+let tabCount = parseInt(localStorage.getItem("windowCounter"));
+tabCount = Number.isNaN(tabCount) ? 1 : ++tabCount;
+
+if(performance.getEntriesByType("navigation")[0].type == "reload"
+|| document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/index.html"
+|| document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/restaurant.html"
+||  document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/search.html"
+||  document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/FoodifyCart.html")
 {
-    if(inp == '') return {};
-    let ca = inp.split(';');
-    let dict = {};
-    for(let i = 0; i < ca.length; i++)
-    {
-        let c = ca[i];
-        while(c.charAt(0) == ' ')
-        {
-            c= c.substring(1);
-        }
-        let len = 0;
-        while(c.charAt(len) != '=')
-        {
-            len++;
-        }
-        dict[c.substring(0, len)] = c.substring(len+1);
-    }
-    return dict;
+    localStorage.setItem("SID", localStorage.getItem("tmpSID"));
+    localStorage.setItem("UID", localStorage.getItem("tmpUID"));
+    localStorage.setItem("NAME", localStorage.getItem("tmpNAME"));
+    localStorage.setItem("cart", localStorage.getItem("tmpCart"));
+    localStorage.removeItem("tmpSID");
+    localStorage.removeItem("tmpUID");
+    localStorage.removeItem("tmpNAME");
+    localStorage.removeItem("tmpCart");
 }
-let decCookie = decodeURIComponent(document.cookie);
 
-let info = parseCookie(decCookie);
-if(info.length == 0)
-    window.location = "FoodifyLoginPage.html";
-
-const session = info["SID"];
-const userid = info["UID"];
-const name = info["NAME"];
-
+try {
+    var session = localStorage.getItem("SID");
+    var userid = localStorage.getItem("UID");
+    var name = localStorage.getItem("NAME");
+} catch(e)
+{
+    window.location = "login.html";
+}
+if(session == null || userid == null || name == null)
+{
+    window.location = "login.html";
+}
+else
+{    
+    localStorage.setItem("windowCounter", tabCount.toString());
+}
 /*
 END OF RETREIVING AND SETTING SESSION VARIABLES
 */
@@ -46,14 +51,18 @@ END OF RETREIVING AND SETTING SESSION VARIABLES
 var intid;
 window.onload = () =>{
     cfss(session, false);
-    intid = startSessionChecker(session);
-    document.body.addEventListener("unload", cancel_session);
+    if(localStorage.windowCount == '1')intid = startSessionChecker(session);
+    //document.body.addEventListener("unload", cancel_session);
     document.getElementById("logout").addEventListener('click', logout);
 };
 
 window.onbeforeunload = function(){
+    let tabCount = parseInt(localStorage.getItem("windowCounter"));
+    localStorage.setItem("windowCounter", --tabCount);
+    if(tabCount == 0) cancel_session();
     killSessionChecker(intid);
 };
+
 function logout()
 {
     cfss(session, true);
