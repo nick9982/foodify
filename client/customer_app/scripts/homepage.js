@@ -45,9 +45,11 @@ if(performance.getEntriesByType("navigation")[0].type == "reload"
     localStorage.setItem("SID", localStorage.getItem("tmpSID"));
     localStorage.setItem("UID", localStorage.getItem("tmpUID"));
     localStorage.setItem("NAME", localStorage.getItem("tmpNAME"));
+    localStorage.setItem("cart", localStorage.getItem("tmpCart"));
     localStorage.removeItem("tmpSID");
     localStorage.removeItem("tmpUID");
     localStorage.removeItem("tmpNAME");
+    localStorage.removeItem("tmpCart");
 }
 
 try {

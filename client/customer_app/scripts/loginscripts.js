@@ -141,10 +141,12 @@ export const cancel_session = () =>
     let sid = window.localStorage.getItem("SID");
     let uid = window.localStorage.getItem("UID");
     let name = window.localStorage.getItem("NAME");
+    let cart = window.localStorage.getItem("cart");
     window.localStorage.clear();
     window.localStorage.setItem("tmpSID", sid);
     window.localStorage.setItem("tmpUID", uid);
     window.localStorage.setItem("tmpNAME", name);
+    window.localStorage.setItem("tmpCart", cart);
     //window.location = "mooaps.html";
 };
 

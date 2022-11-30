@@ -19,9 +19,11 @@ if(performance.getEntriesByType("navigation")[0].type == "reload"
     localStorage.setItem("SID", localStorage.getItem("tmpSID"));
     localStorage.setItem("UID", localStorage.getItem("tmpUID"));
     localStorage.setItem("NAME", localStorage.getItem("tmpNAME"));
+    localStorage.setItem("cart", localStorage.getItem("tmpCart"));
     localStorage.removeItem("tmpSID");
     localStorage.removeItem("tmpUID");
     localStorage.removeItem("tmpNAME");
+    localStorage.removeItem("tmpCart");
 }
 
 try {
@@ -43,7 +45,21 @@ else
 /*
 END OF RETREIVING AND SETTING SESSION VARIABLES
 */
-var hasBeenDeclared = false;
+var cart = [];
+if(localStorage.getItem("cart") != null) cart = localStorage.getItem("cart").split(",");
+function selectItem(evt)
+{
+    var itemid = itms[parseEvent(evt.currentTarget.id)];
+    cart.push(itemid);
+    localStorage.setItem("cart", cart);
+}
+
+function parseEvent(evt)
+{
+    return parseInt(evt.substring(3));
+}
+
+var itms = [];
 const orderMenu = () =>
 {
     retrieveMenu()
@@ -55,13 +71,14 @@ const orderMenu = () =>
             for(let i = 0; i < arr.length; i++)
             {
                 const tuple = arr[i];
+                itms.push(tuple["ItemID"]);
                 const parent = document.createElement("tr");
 
                 const title = document.createElement("td");
                 title.innerHTML = tuple["Name"];
 
                 const prc = document.createElement("td");
-                prc.innerHTML = tuple["Price"] + " $";
+                prc.innerHTML = "$" +tuple["Price"];
 
                 const imgcont = document.createElement("td");
                 const img = document.createElement("img");
@@ -71,10 +88,11 @@ const orderMenu = () =>
                 imgcont.appendChild(img);
                 
                 const btncontainer = document.createElement("td");
-                const button = document.createElement("button");
-                button.onclick = selectItem(i);
-                button.setAttribute("class", "menuBtn1");
-                btncontainer.appendChild(button);
+                btncontainer.innerHTML = `<button class="menuBtn1" id="btn${i}">Add to cart</button>`;
+                //const button = document.getElementById(`btn${i}`);
+                //button.addEventListener('click', selectItem(i));
+                //button.setAttribute("class", "menuBtn1");
+                //btncontainer.appendChild(button);
 
                 parent.appendChild(title);
                 parent.appendChild(prc);
@@ -85,18 +103,17 @@ const orderMenu = () =>
             }
             document.body.appendChild(menu);
             menu.style.align = "center";
+            addEventToBtn();
         });
-        hasBeenDeclared = true;
-
 
 };
 
-
-function selectItem(i)
+function addEventToBtn()
 {
-    if(hasBeenDeclared)
+    for(let i = 0; i < itms.length; i++)
     {
-        console.log(i);
+        const btn = document.getElementById(`btn${i}`);
+        btn.addEventListener('click', selectItem, false);
     }
 }
 
@@ -127,6 +144,7 @@ window.onload = () =>{
     document.getElementById("logout").addEventListener('click', logout);
     document.getElementById("cartbtn").addEventListener('click', toCart);
     orderMenu();
+    addEventToBtn();
 };
 
 function toCart()
