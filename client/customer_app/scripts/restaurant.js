@@ -46,7 +46,7 @@ else
 END OF RETREIVING AND SETTING SESSION VARIABLES
 */
 var cart = [];
-if(localStorage.getItem("cart") != null) cart = localStorage.getItem("cart").split(",");
+if(localStorage.getItem("cart") != "null") cart = localStorage.getItem("cart").split(",");
 function selectItem(evt)
 {
     var itemid = itms[parseEvent(evt.currentTarget.id)];

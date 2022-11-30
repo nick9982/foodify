@@ -22,6 +22,10 @@
     font-family: monospace;
 }
 
+.menuBtn1:active {
+    background-color: lightgreen;
+}
+
 .image {
     display: inline-block;
     background-color: white;

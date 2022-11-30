@@ -113,7 +113,7 @@ function addItem() {
 var intid;
 window.onload = () =>{
     cfss(session, false);
-    intid = startSessionChecker(session);
+    if(localStorage.windowCount == '1')intid = startSessionChecker(session);
     menu();
     document.body.addEventListener("unload", cancel_session);
     document.getElementById("logout").addEventListener('click', logout);
@@ -129,4 +129,5 @@ window.onbeforeunload = function(){
 function logout()
 {
     cfss(session, true);
+    window.location = "FoodifyLoginPage.html";
 }

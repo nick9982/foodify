@@ -31,7 +31,7 @@ p {
     color: black;
 }
 
-table {
+#html-cart-table {
     padding: 0;
     margin: auto;
     border-collapse: collapse;
@@ -42,17 +42,17 @@ table {
     color: black;
 }
 
-table tr td {
+#html-cart-table tr td {
 
     height: 25px;
     
 }
 
-tr:nth-child(1) {
+#html-cart-table>tr:nth-child(1) {
     background-color: burlywood;
 }
 
-tr:nth-child(even) {
+#html-cart-table>tr:nth-child(even) {
     background-color: white;
 }
 

@@ -16,9 +16,12 @@ app.use('/create_account', require('./routes/create_acc'));
 app.use('/login', require('./routes/login'));
 
 app.use('/view_menu', require('./routes/viewMenu'));
+
 app.use('/order', require('./routes/order'));
 
 app.use('/verify_session', require('./routes/session'));
+
+app.use('/remove_order', require('./routes/removeOrder'));
 
 
 app.listen(PORT, () => {

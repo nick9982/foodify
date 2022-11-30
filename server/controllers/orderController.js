@@ -14,41 +14,44 @@ const sqlConfig = {
         trustServerCertificate: false,
     },
 };
-let ID = 1;
 
 const handleGetAllOrders = async (req, res) => {
     try {
         await sql.connect(sqlConfig);
         var result = await sql.query(`
-        select * from Orders
+            SELECT * FROM ORDERS
         `);
     } catch (error) {
         throw error;
     }
     res.send(JSON.stringify(result.recordsets));
-}
+};
 
 const handleTakeOrder = async (req, res) => {
-    const order = req.body.orderIDs;
-    console.log(order);
+    const cname = req.body.c_name;
+    const order = req.body.order;
+    const date = Date();
+    let orderid;
     try {
         await sql.connect(sqlConfig);
 
-        // var result = await sql.query(`
-        // insert into ORDERS (ORDER_ID, C_NAME, ORDER_DATE, ORDER_DETAILS) 
-        // VALUES ('${ID}', 'JOHNNY', '${Date()}', '${order}');
-        // `);
+        await sql.query(`
+            INSERT INTO ORDERS VALUES(
+                '${cname}', '${date}', '${order}'
+            )
+        `);
 
         var result = await sql.query(`
-        select * from ORDERS;
+                SELECT ORDER_ID FROM ORDERS
+                WHERE C_NAME = '${cname}' AND ORDER_DATE = '${date}'
+                AND ORDER_DETAILS = '${order}'
         `);
+
+        res.send({response: result.recordsets[0][0]["ORDER_ID"]});
     } catch (error) {
-        console.log('ERROR ERROR ERROR ERROR ERROR:');
+        res.send({response: "error"});
         throw error;
     }
-    console.log(result);
-    ID = ID + 1;
-    res.status(201).send("CREATED");
-}
+};
 
 module.exports = {handleGetAllOrders, handleTakeOrder};

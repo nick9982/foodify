@@ -50,16 +50,20 @@ else
 /*
 END OF RETREIVING AND SETTING SESSION VARIABLES
 */
-
+var canOrder = false;
 function renderDataInTheTable() {
     if(order_qty[null] != undefined)
     {
         const error = document.createElement("p");
-        error.innerHTML = "You have added nothing to the cart!";
+        error.innerHTML = `You have added nothing to the cart! <a href="restaurant.html"> Click here to order</a>`;
+        document.getElementById("html-cart-table").style.visibility = "hidden";
+        document.getElementById("order_now").style.visibility = "hidden";
         document.body.appendChild(error);
     }
     else
     {
+        document.getElementById("html-cart-table").style.visibility = "visible";
+        document.getElementById("order_now").style.visibility = "visible";
         retrieveMenu()
             .then(response => response.json())
             .then(data =>{
@@ -85,8 +89,8 @@ function renderDataInTheTable() {
                         newRow.appendChild(cell3);
 
                         mytable.appendChild(newRow);
+                        canOrder = true;
                     }
-
                 }
             });
     }
@@ -144,8 +148,50 @@ function toHome()
 
 function orderNow()
 {
-    
+    if(canOrder)
+    {
+        createOrder(name, order)
+            .then(response => response.json())
+            .then(data => {
+                if(data["response"] == "error")
+                {
+                    alert("order has failed");
+                }
+                else
+                {
+                    alert(`order has been placed. ORDER ID: ${data["response"]}`);
+                    localStorage.removeItem("cart");
+                    order = [];
+                    order_qty = {"null": 1};
+                    window.location = "index.html";
+                }
+            });
+        canOrder = false;
+    }
+    else
+    {
+        alert("You have not selected anything to order yet!");
+    }
 }
+
+const createOrder = async (c_name, order) =>
+{
+    const response = await fetch(server + "/order/takeOrder", {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        redirect: 'follow',
+        reffererPolicy: 'no-refferer',
+        body: JSON.stringify({c_name: c_name, order: order.toString()})
+    });
+
+    return response;
+};
 
 window.onbeforeunload = function(){
     let tabCount = parseInt(localStorage.getItem("windowCounter"));
