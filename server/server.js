@@ -16,10 +16,10 @@ app.use('/create_account', require('./routes/create_acc'));
 app.use('/login', require('./routes/login'));
 
 app.use('/view_menu', require('./routes/viewMenu'));
+app.use('/order', require('./routes/order'));
 
 app.use('/verify_session', require('./routes/session'));
 
-app.use('/customer_register', require('./routes/customer_register'));
 
 app.listen(PORT, () => {
     console.log('I\'m listening on port http://localhost:' + PORT);
