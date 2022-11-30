@@ -73,18 +73,22 @@ const orderMenu = () =>
                 const tuple = arr[i];
                 itms.push(tuple["ItemID"]);
                 const parent = document.createElement("tr");
+                parent.setAttribute("class", "rowStyling");
 
                 const title = document.createElement("td");
                 title.innerHTML = tuple["Name"];
+                title.setAttribute("class", "menuTxtPadded");
 
                 const prc = document.createElement("td");
                 prc.innerHTML = "$" +tuple["Price"];
+                prc.setAttribute("class", "menuTxt");
 
                 const imgcont = document.createElement("td");
                 const img = document.createElement("img");
                 img.setAttribute('src', tuple["urlToImg"]);
                 img.setAttribute('alt', tuple["Name"] + " image");
-                img.setAttribute("class", "menuBtn1");
+                img.setAttribute("class", "image");
+            
                 imgcont.appendChild(img);
                 
                 const btncontainer = document.createElement("td");
