@@ -6,51 +6,13 @@ const server = "http://localhost:8080";
 RETRIEVING THE SESSION VARIABLES
 
 */
-const localStorage = window.localStorage;
-let tabCount = parseInt(localStorage.getItem("windowCounter"));
-tabCount = Number.isNaN(tabCount) ? 1 : ++tabCount;
-
-if(performance.getEntriesByType("navigation")[0].type == "reload"
-|| document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/index.html"
-|| document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/restaurant.html"
-||  document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/search.html"
-||  document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/FoodifyCart.html")
-{
-    localStorage.setItem("SID", localStorage.getItem("tmpSID"));
-    localStorage.setItem("UID", localStorage.getItem("tmpUID"));
-    localStorage.setItem("NAME", localStorage.getItem("tmpNAME"));
-    localStorage.setItem("cart", localStorage.getItem("tmpCart"));
-    localStorage.removeItem("tmpSID");
-    localStorage.removeItem("tmpUID");
-    localStorage.removeItem("tmpNAME");
-    localStorage.removeItem("tmpCart");
-}
-
-try {
-    var session = localStorage.getItem("SID");
-    var userid = localStorage.getItem("UID");
-    var name = localStorage.getItem("NAME");
-    localStorage.removeItem("tmpSID");
-    localStorage.removeItem("tmpUID");
-    localStorage.removeItem("tmpNAME");
-} catch(e)
-{
-    window.location = "login.html";
-}
-if(session == null || userid == null || name == null)
-{
-    window.location = "login.html";
-}
-else
-{    
-    localStorage.setItem("windowCounter", tabCount.toString());
-}
 
 
 /*
 END OF RETREIVING AND SETTING SESSION VARIABLES
 */
 var canOrder = false;
+let totalPrice = 0;
 function renderDataInTheTable() {
     if(order_qty[null] != undefined)
     {
@@ -82,7 +44,9 @@ function renderDataInTheTable() {
 
                         cell1.innerText = tuple["Name"];
                         cell2.innerText = qty;
-                        cell3.innerText = "$" + tuple["Price"];
+                        let price = parseInt(qty) * parseInt(tuple["Price"]);
+                        totalPrice+=price;
+                        cell3.innerText = "$" + price;
 
                         newRow.appendChild(cell1);
                         newRow.appendChild(cell2);
@@ -92,6 +56,11 @@ function renderDataInTheTable() {
                         canOrder = true;
                     }
                 }
+                const total_price = document.createElement("p");
+                total_price.innerHTML = `Total price: \$${totalPrice}`;
+                total_price.style.textAlign = "center";
+                const par = document.getElementById("totalp");
+                par.appendChild(total_price);
             });
     }
 }
@@ -114,8 +83,6 @@ const retrieveMenu = async () =>
     return response;
 };
 
-var order = localStorage.getItem("cart").split(",");
-let order_qty = orderQtyMap(order);
 function orderQtyMap(order)
 {
     let map = {};
@@ -128,12 +95,60 @@ function orderQtyMap(order)
     return map;
 }
 
-
+let order_qty;
 //SESSION EVENT HANDLERS
 var intid;
+var session;
+var userid;
+var name;
+var order = [null];
 window.onload = () =>{
+    const localStorage = window.localStorage;
+    let tabCount = parseInt(localStorage.getItem("windowCounter"));
+    tabCount = Number.isNaN(tabCount) ? 1 : ++tabCount;
+
+    if((performance.getEntriesByType("navigation")[0].type == "reload"
+    || document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/index.html"
+    || document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/restaurant.html"
+    ||  document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/search.html"
+    ||  document.referrer == "http://127.0.0.1:5500/client/customer_app/pages/FoodifyCart.html")
+    && (localStorage.getItem("tmpSID") != null && localStorage.getItem("tmpUID") != null && localStorage.getItem("tmpNAME") != null && localStorage.getItem("tmpCart") != null))
+    {
+        localStorage.setItem("SID", localStorage.getItem("tmpSID"));
+        localStorage.setItem("UID", localStorage.getItem("tmpUID"));
+        localStorage.setItem("NAME", localStorage.getItem("tmpNAME"));
+        localStorage.setItem("cart", localStorage.getItem("tmpCart"));
+        localStorage.removeItem("tmpSID");
+        localStorage.removeItem("tmpUID");
+        localStorage.removeItem("tmpNAME");
+        localStorage.removeItem("tmpCart");
+    }
+
+    try {
+        session = localStorage.getItem("SID");
+        userid = localStorage.getItem("UID");
+        name = localStorage.getItem("NAME");
+        localStorage.removeItem("tmpSID");
+        localStorage.removeItem("tmpUID");
+        localStorage.removeItem("tmpNAME");
+    } catch(e)
+    {
+        window.location = "login.html";
+    }
+    if(session == null || userid == null || name == null)
+    {
+        window.location = "login.html";
+    }
+    else
+    {    
+        localStorage.setItem("windowCounter", tabCount.toString());
+    }
+    if(localStorage.getItem("cart") != null && localStorage.getItem("cart") != "null"){
+        order = localStorage.getItem("cart").split(",");
+    }
+    order_qty = orderQtyMap(order);
     cfss(session, false);
-    if(localStorage.windowCount == '1')intid = startSessionChecker(session);
+    if(localStorage.windowCounter == '1')intid = startSessionChecker(session);
     //document.body.addEventListener("unload", cancel_session);
     renderDataInTheTable();
     document.getElementById("logout").addEventListener('click', logout);
@@ -159,7 +174,7 @@ function orderNow()
                 }
                 else
                 {
-                    alert(`order has been placed. ORDER ID: ${data["response"]}`);
+                    alert(`order has been placed. ORDER ID: ${data["response"]}\nThe price was: \$${totalPrice}`);
                     localStorage.removeItem("cart");
                     order = [];
                     order_qty = {"null": 1};
@@ -196,7 +211,10 @@ const createOrder = async (c_name, order) =>
 window.onbeforeunload = function(){
     let tabCount = parseInt(localStorage.getItem("windowCounter"));
     localStorage.setItem("windowCounter", --tabCount);
-    if(tabCount == 0) cancel_session();
+    if(tabCount <= 0){
+        cancel_session();
+        localStorage.removeItem("windowCounter");
+    }
     killSessionChecker(intid);
 };
 

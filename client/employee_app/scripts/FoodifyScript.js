@@ -28,9 +28,9 @@ function validate()
                             document.cookie = `UID=${data1["Uid"]};SameSite=None;Secure;path=/`;
                             document.cookie = `NAME=${data1["Name"]};SameSite=None;Secure;path=/`;*/
                             const localStorage = window.localStorage;
-                            localStorage.setItem("SID", data1["Ses_id"]);
-                            localStorage.setItem("UID", data1["Uid"]);
-                            localStorage.setItem("NAME", data1["Name"]);
+                            localStorage.setItem("eSID", data1["Ses_id"]);
+                            localStorage.setItem("eUID", data1["Uid"]);
+                            localStorage.setItem("eNAME", data1["Name"]);
                             window.location = "FoodifyMenu.html";
                         }
                     });
@@ -151,13 +151,15 @@ export const cancel_session = () =>
     clearCookie("SID", "/", domain);
     clearCookie("UID", "/", domain);
     clearCookie("NAME", "/", domain);*/
-    let sid = window.localStorage.getItem("SID");
-    let uid = window.localStorage.getItem("UID");
-    let name = window.localStorage.getItem("NAME");
-    window.localStorage.clear();
-    window.localStorage.setItem("tmpSID", sid);
-    window.localStorage.setItem("tmpUID", uid);
-    window.localStorage.setItem("tmpNAME", name);
+    let sid = window.localStorage.getItem("eSID");
+    let uid = window.localStorage.getItem("eUID");
+    let name = window.localStorage.getItem("eNAME");
+    window.localStorage.removeItem("eSID");
+    window.localStorage.removeItem("eUID");
+    window.localStorage.removeItem("eNAME");
+    window.localStorage.setItem("tmpeSID", sid);
+    window.localStorage.setItem("tmpeUID", uid);
+    window.localStorage.setItem("tmpeNAME", name);
 };
 
 const login = async (data) =>
