@@ -142,7 +142,10 @@ export const cancel_session = () =>
     let uid = window.localStorage.getItem("UID");
     let name = window.localStorage.getItem("NAME");
     let cart = window.localStorage.getItem("cart");
-    window.localStorage.clear();
+    window.localStorage.removeItem("SID");
+    window.localStorage.removeItem("UID");
+    window.localStorage.removeItem("NAME");
+    window.localStorage.removeItem("cart");
     window.localStorage.setItem("tmpSID", sid);
     window.localStorage.setItem("tmpUID", uid);
     window.localStorage.setItem("tmpNAME", name);
